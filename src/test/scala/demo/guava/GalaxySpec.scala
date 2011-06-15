@@ -1,13 +1,14 @@
 package com.porpoise
 
-import scala.collection.JavaConversions._
 import demo.guava._
 import org.junit.runner.RunWith
+import org.junit.Assert
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.{ FeatureSpec, FlatSpec, FunSuite, Spec }
-import org.junit.Assert
-import demo.guava.Galaxy
+import scala.collection.JavaConversions._
+import demo.guava.metadata.GalaxyMetadata
+import demo.guava.metadata.PlanetMetadata
 
 /**
  * Specification for a Galaxy
@@ -15,17 +16,17 @@ import demo.guava.Galaxy
 @RunWith(classOf[JUnitRunner])
 class ScalaBeanSpec extends Spec with ShouldMatchers {
 
+  def newSystem = {
+    def newPlanet(name: String) = (new Planet(name, name.length))
+    val system = new PlanetarySystem()
+    system.addPlanet(newPlanet("Earth"))
+    system.addPlanet(newPlanet("Venus"))
+    system.addPlanet(newPlanet("Mars"))
+    system.addPlanet(newPlanet("Saturn"))
+    system
+  }
   def newTestData = new {
     val galaxy = new Galaxy()
-    def newSystem = {
-      def newPlanet(name: String) = (new Planet(name, name.length))
-      val system = new PlanetarySystem()
-      system.addPlanet(newPlanet("Earth"))
-      system.addPlanet(newPlanet("Venus"))
-      system.addPlanet(newPlanet("Mars"))
-      system.addPlanet(newPlanet("Saturn"))
-      system
-    }
     galaxy.addSystem(newSystem)
     galaxy.addSystem(newSystem)
   }
@@ -41,6 +42,21 @@ class ScalaBeanSpec extends Spec with ShouldMatchers {
 
       Assert.assertTrue(allPlanets.containsAll(galaxy.getPlanets))
       Assert.assertTrue(galaxy.getPlanets.containsAll(allPlanets))
+    }
+    it("should be able to be diff'ed against another galaxy") {
+      val galaxyOne = newTestData.galaxy
+      val galaxyTwo = newTestData.galaxy
+
+      val diff = GalaxyMetadata.diff(galaxyOne, galaxyTwo)
+      println(diff)
+    }
+    it("should be able to be diff'ed against another galaxy on a subset of properties") {
+      val galaxyOne = newTestData.galaxy
+      val galaxyTwo = newTestData.galaxy
+
+      val properties = AllMetadata.less(PlanetMetadata.NAME)
+      val diff = GalaxyMetadata.diff(galaxyOne, galaxyTwo, properties)
+      println(diff)
     }
   }
 }
