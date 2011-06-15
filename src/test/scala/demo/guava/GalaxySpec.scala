@@ -13,7 +13,7 @@ import demo.guava.Galaxy
  * Specification for a Galaxy
  */
 @RunWith(classOf[JUnitRunner])
-class ScalaBeanSpec extends Spec with ShouldMatchers {
+class GalaxySpec extends Spec with ShouldMatchers {
 
   def newTestData = new {
     val galaxy = new Galaxy()
