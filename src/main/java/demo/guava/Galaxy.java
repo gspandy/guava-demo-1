@@ -2,13 +2,10 @@ package demo.guava;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
+import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
+import com.porpoise.common.collect.Sequences;
 
 /**
  */
@@ -39,35 +36,37 @@ public class Galaxy {
      * @return all the planets in this galaxy
      */
     public Collection<Planet> getPlanets() {
-        final Collection<Planet> planets = Lists.newArrayList();
-        for (PlanetarySystem system : getSystems()) {
-            planets.addAll(system.getPlanets());
-        }
-        return planets;
+        return Sequences.flatMap(getSystems(),
+                new Function<PlanetarySystem, Collection<Planet>>() {
+                    @Override
+                    public Collection<Planet> apply(final PlanetarySystem input) {
+                        return input.getPlanets();
+                    }
+                });
     }
 
     /**
      * @return all the planets in this galaxy
      */
     public Map<String, Collection<Planet>> getPlanetsByName() {
-        final Multimap<String, Planet> planetsByName = ArrayListMultimap
-                .create();
-        for (Planet planet : getPlanets()) {
-            planetsByName.put(planet.getName(), planet);
-        }
-        return planetsByName.asMap();
+        return Sequences.groupBy(getPlanets(), new Function<Planet, String>() {
+            @Override
+            public String apply(final Planet input) {
+                return input.getName();
+            }
+        });
     }
 
     /**
      * @return all the planets in this galaxy
      */
     public Map<String, Planet> getPlanetsByNameUnique() {
-        final Map<String, Planet> planetsByName = Maps.newHashMap();
-        for (Entry<String, Collection<Planet>> entry : getPlanetsByName()
-                .entrySet()) {
-            planetsByName.put(entry.getKey(),
-                    Iterables.getOnlyElement(entry.getValue()));
-        }
-        return planetsByName;
+        return Sequences.groupByUnique(getPlanets(),
+                new Function<Planet, String>() {
+                    @Override
+                    public String apply(final Planet input) {
+                        return input.getName();
+                    }
+                });
     }
 }
