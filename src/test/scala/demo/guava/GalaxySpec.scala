@@ -16,24 +16,24 @@ import demo.guava.metadata.PlanetMetadata
 @RunWith(classOf[JUnitRunner])
 class ScalaBeanSpec extends Spec with ShouldMatchers {
 
-  def newSystem = {
-    def newPlanet(name: String) = (new Planet(name, name.length))
-    val system = new PlanetarySystem()
-    system.addPlanet(newPlanet("Earth"))
+  def newSystem(prefix: String) = {
+    def newPlanet(name: String) = (new Planet(prefix + name, (prefix + name).length))
+    val system = new PlanetarySystem
+    system.addPlanet(newPlanet("Mercury"))
     system.addPlanet(newPlanet("Venus"))
+    system.addPlanet(newPlanet("Earth"))
     system.addPlanet(newPlanet("Mars"))
-    system.addPlanet(newPlanet("Saturn"))
     system
   }
   def newTestData = new {
     val galaxy = new Galaxy()
-    galaxy.addSystem(newSystem)
-    galaxy.addSystem(newSystem)
+    galaxy.addSystem(newSystem("Alpha"))
+    galaxy.addSystem(newSystem("Bravo"))
   }
 
   describe("A Galaxy") {
     it("should be able to get all planets") {
-      val data = newTestData
+      val data = this.newTestData
       import data._
       val planets = galaxy.getPlanets
 
@@ -44,7 +44,7 @@ class ScalaBeanSpec extends Spec with ShouldMatchers {
       Assert.assertTrue(galaxy.getPlanets.containsAll(allPlanets))
     }
     it("should be able to be diff'ed against another galaxy") {
-      val galaxyOne = newTestData.galaxy
+      val galaxyOne = this.newTestData.galaxy
       val galaxyTwo = newTestData.galaxy
 
       val diff = GalaxyMetadata.diff(galaxyOne, galaxyTwo)
