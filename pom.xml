@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.porpoise</groupId>
-	<artifactId>alpha</artifactId>
+	<artifactId>guava-demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>alpha</name>
+	<name>guava-demo</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<scala.version>2.9.0</scala.version>
 		<scalatest.version>1.4.1</scalatest.version>
-		<git.url>scm:git:file:///Users/Aaron/dev/sandbox/alpha</git.url>
+		<git.url>scm:git:file:///Users/Aaron/dev/sandbox/guava-demo</git.url>
 		<publish.to.url>file:///Users/Aaron/.m2/repository</publish.to.url>
 		<javaDocVersion>2.5</javaDocVersion>
 		<findbugsVersion>2.0.1</findbugsVersion>
