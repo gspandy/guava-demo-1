@@ -1,5 +1,6 @@
 package com.porpoise
 
+import com.porpoise.common.metadata._
 import demo.guava._
 import org.junit.runner.RunWith
 import org.junit.Assert
@@ -13,15 +14,22 @@ import demo.guava.metadata._
  * Specification for a Galaxy
  */
 @RunWith(classOf[JUnitRunner])
-class ScalaBeanSpec extends Spec with ShouldMatchers {
+class GalaxySpec extends Spec with ShouldMatchers {
     
-    def forSome[T](f : Galaxy => T) = {
-        val galaxyOne = newTestData.galaxy
-        f(galaxyOne)
+    def withSome[T](f : (Galaxy, Collection[Metadata[_,_]]) => T) = {
+      val properties = AllMetadata.less(PlanetMetadata.NAME)
+      f(newTestData.galaxy, properties)
     }
+    def withAll[T](f : Galaxy => T) = f(newTestData.galaxy)
 
   def newSystem(prefix: String) = {
-    def newPlanet(name: String) = (new Planet(prefix + name, (prefix + name).length))
+    def newPlanet(name: String) = {
+      val planet = new Planet(prefix + name, (prefix + name).length)
+      planet.addAttribute(prefix + " sweet", prefix + " value")
+      planet.addAttribute(prefix + " sour", prefix + " carp")
+      planet.setDateDiscovered(new java.util.Date());
+      planet
+    }
     val system = new PlanetarySystem
     system.addPlanet(newPlanet("Mercury"))
     system.addPlanet(newPlanet("Venus"))
@@ -50,36 +58,26 @@ class ScalaBeanSpec extends Spec with ShouldMatchers {
     }
 
     it("should be able to be diff'ed against another galaxy") {
-      val galaxyOne = this.newTestData.galaxy
-      val galaxyTwo = newTestData.galaxy
-
-      val diff = GalaxyMetadata.diff(galaxyOne, galaxyTwo)
+      val diff = withAll{ galaxy => GalaxyMetadata.diff(galaxy, newTestData.galaxy) }
       println(diff)
     }
 
     it("should be able to be diff'ed against another galaxy on a subset of properties") {
-      val galaxyOne = newTestData.galaxy
-      val galaxyTwo = newTestData.galaxy
-
-      val properties = AllMetadata.less(PlanetMetadata.NAME)
-      val diff = GalaxyMetadata.diff(galaxyOne, galaxyTwo, properties)
+      val diff = withSome{ case (galaxy, properties) => GalaxyMetadata.diff(galaxy, newTestData.galaxy, properties) }
       println(diff)
     }
     
     it("should be converted to a string for all its properties") {
-        val galaxyOne = newTestData.galaxy
-        val str = GalaxyMetadata.toString(galaxyOne)
+        val str = withAll{ galaxy => GalaxyMetadata.toString(galaxy) }
         println(str)
     }
     
     it("should be converted to a string for a subset of its properties") {
-        val galaxyOne = newTestData.galaxy
-        val properties = AllMetadata.less(PlanetMetadata.NAME)
-        val str = GalaxyMetadata.toString(galaxyOne, properties)
+        val str = withSome{ case (galaxy, properties) => GalaxyMetadata.toString(galaxy, properties) }
         println(str)
     }
     
-    it("should be converted to a string for only some of its properties") {
+    it("should be converted to a string for only specified properties") {
         val galaxyOne = newTestData.galaxy
         val str = GalaxyMetadata.toString(galaxyOne, GalaxyMetadata.SYSTEMS, PlanetarySystemMetadata.PLANETS, PlanetMetadata.NAME, PlanetMetadata.MASS)
         println(str)
