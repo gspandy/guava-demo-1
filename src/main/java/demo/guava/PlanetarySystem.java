@@ -3,12 +3,12 @@ package demo.guava;
 import java.util.Collection;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Lists;
 
 /**
  */
 public class PlanetarySystem {
-    private final Collection<Planet> planets = Sets.newHashSet();
+    private final Collection<Planet> planets = Lists.newArrayList();
 
     /**
      * @return the planets in this system

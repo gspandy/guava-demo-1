@@ -1,9 +1,12 @@
 package demo.guava
 
-import TestData.scala.collection.JavaConversions.demo.guava.metadata.java.util.com.porpoise.common.functions._
-import TestData.scala.collection.JavaConversions.demo.guava.metadata.java.util._
-import TestData.scala.collection.JavaConversions.demo.guava.metadata._
-import TestData.scala.collection.JavaConversions._
+import demo.guava.metadata._
+import java.util._
+import com.porpoise.common.functions._
+import demo.guava.metadata._
+import demo.guava.metadata._
+import org.junit._
+import scala.collection.JavaConversions._
 import TestData._
 
 class GuavaTest {
@@ -17,7 +20,9 @@ class GuavaTest {
 
   @Test
   def testDiffAgainstAnotherGalaxy() = {
-    val diff = withAll { galaxy => GalaxyMetadata.diff(galaxy, newTestData().galaxy) }
+    val left = newTestData().galaxy
+    val right = newTestData().galaxy
+    val diff = GalaxyMetadata.diff(left, right)
     println(diff)
   }
 
@@ -32,14 +37,12 @@ class GuavaTest {
     val planet3 = new Planet("Blah", 1234)
     planet3.setInhabitable(true)
 
-    val key = Keys.keyFunction( PlanetAccessors.GET_MASS, PlanetAccessors.IS_INHABITABLE)
+    val key = Keys.keyFunction(PlanetAccessors.GET_MASS, PlanetAccessors.IS_INHABITABLE)
     val set = new FunctionSet(key)
 
-    Assert.assertTrue( set.add(planet))
-    Assert.assertTrue( set.add(planet2))
-    Assert.assertFalse( set.add(planet3))
-    
-    println(set)
+    Assert.assertTrue(set.add(planet))
+    Assert.assertTrue(set.add(planet2))
+    Assert.assertFalse(set.add(planet3))
   }
 
   @Test
