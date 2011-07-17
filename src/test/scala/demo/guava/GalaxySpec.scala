@@ -48,13 +48,13 @@ class GalaxySpec extends Spec with ShouldMatchers {
     it("should be able to get all planets") {
       val data = this.newTestData
       import data._
-      val planets = galaxy.getPlanets
+      val planets = galaxy.getPlanetsTheAccessorsWay
 
       Assert.assertFalse(galaxy.getSystems.isEmpty)
       val allPlanets = galaxy.getSystems.flatMap(_.getPlanets)
 
-      Assert.assertTrue(allPlanets.containsAll(galaxy.getPlanets))
-      Assert.assertTrue(galaxy.getPlanets.containsAll(allPlanets))
+      Assert.assertTrue(allPlanets.containsAll(galaxy.getPlanetsTheAccessorsWay))
+      Assert.assertTrue(galaxy.getPlanetsTheAccessorsWay.containsAll(allPlanets))
     }
 
     it("should be able to be diff'ed against another galaxy") {
