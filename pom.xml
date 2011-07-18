@@ -16,25 +16,6 @@
 		<javaDocVersion>2.5</javaDocVersion>
 		<findbugsVersion>2.0.1</findbugsVersion>
 	</properties>
-	<repositories>
-		<repository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</pluginRepository>
-		<!-- mvn undercover:undercover-maven-plugin:undercover -->
-		<pluginRepository>
-			<id>undercover</id>
-			<url>http://undercover.googlecode.com/svn/maven/repository</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<reporting>
 		<plugins>
 			<plugin>
@@ -81,11 +62,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>com.jteigen</groupId>
-					<artifactId>maven-scalatest-plugin</artifactId>
-					<version>1.1-SNAPSHOT</version>
-				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>dashboard-maven-plugin</artifactId>
@@ -148,51 +124,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.1</version>
-			</plugin>
-			<plugin>
-				<groupId>com.jteigen</groupId>
-				<artifactId>maven-scalatest-plugin</artifactId>
-				<version>1.1-SNAPSHOT</version>
-			</plugin>
-			<plugin>
-				<groupId>org.scala-tools</groupId>
-				<artifactId>maven-scala-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>testCompile</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<scalaVersion>${scala.version}</scalaVersion>
-					<args>
-						<arg>-target:jvm-1.5</arg>
-					</args>
-					<sourceDir>src/main/java</sourceDir>
-					<jvmArgs>
-						<jvmArg>-Xms64m</jvmArg>
-						<jvmArg>-Xmx1024m</jvmArg>
-					</jvmArgs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<buildcommands>
-						<buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
-					</buildcommands>
-					<additionalProjectnatures>
-						<projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
-					</additionalProjectnatures>
-					<classpathContainers>
-						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-						<classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
-					</classpathContainers>
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
