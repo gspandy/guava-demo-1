@@ -19,7 +19,7 @@ public class DemoApp
 		galaxy.addSystem(newSystem("Mars", "Jupiter"));
 
 		System.out.println(GalaxyMetadata.toString(galaxy,
-				AllMetadata.less(GalaxyMetadata.PLANETS_BY_NAME, GalaxyMetadata.PLANETS)));
+				AllMetadata.less(GalaxyMetadata.PLANETS_BY_NAME, GalaxyMetadata.PLANETS_THE_ACCESSORS_WAY)));
 		// System.out.println(GalaxyMetadata.toTreeString(galaxy));
 	}
 
